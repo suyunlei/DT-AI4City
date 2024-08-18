@@ -32,7 +32,12 @@
     "parserOptions": {
       "parser": "@babel/eslint-parser"
     },
-    "rules": {}
+    "rules": {
+      "no-debugger": "off"
+    },
+    "globals": {
+      "Cesium":true
+    }
   },
   "browserslist": [
     "> 1%",

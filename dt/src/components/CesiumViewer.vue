@@ -8,8 +8,8 @@ export default {
     data() {
         return {
             viewer: null,
-            hkustBuildingUrl: 'http://localhost:8080/HKUSTData/tileset.json'
-            // hkustBuildingUrl: 'http://localhost:8080/onegeo/tileset.json'
+            hkustBuildingUrl: 'http://localhost:8080/HKUSTData/tileset.json',
+            taiyuanModelUrl: 'http://localhost:8080/taiyuan_gltf/modelinfo.json',
         };
     },
     mounted() {
@@ -29,9 +29,16 @@ export default {
         });
         //隐藏cesium的logo
         this.viewer._cesiumWidget._creditContainer.style.display = "none";
+
         this.loadHKUSTBuilding();
+        this.loadModel();
     },
     methods: {
+        /**
+         * 加载HKUST建筑物
+         * @returns {Promise<void>}
+         * @description 从URL加载3D瓦片集
+         */
         async loadHKUSTBuilding(){
             try {
                 const tileset = await Cesium.Cesium3DTileset.fromUrl(
@@ -43,7 +50,7 @@ export default {
                 console.error(`Error creating tileset: ${error}`);
             }
 
-                // 监听点击事件
+            // 监听点击事件
             this.viewer.screenSpaceEventHandler.setInputAction((movement) => {
                 const pickedFeature = this.viewer.scene.pick(movement.position);
                 if (Cesium.defined(pickedFeature)) {
@@ -52,7 +59,39 @@ export default {
                     console.log(pickedFeature);
                 }
             }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-        }
+        },
+        /**
+         * 加载gltf模型
+         * @returns {Promise<void>}
+         * @description 从URL加载模型
+         */
+        async loadModel() {
+            try {
+                const response = await fetch(this.taiyuanModelUrl);
+                const modelData = await response.json();
+                console.log(modelData);
+                for (const [gltfName, modelInfo] of Object.entries(modelData)) {
+                    const gltfUrl = `http://localhost:8080/taiyuan_gltf/${gltfName}`;
+                    const { center } = modelInfo;
+                    const position = Cesium.Cartesian3.fromDegrees(center[0], center[1]);
+                    // 创建旋转矩阵，将模型从竖直方向旋转到水平面
+                    const hpr = new Cesium.HeadingPitchRoll(0, Cesium.Math.toRadians(90), 0);
+
+                    const model = await Cesium.Model.fromGltfAsync({
+                        url: gltfUrl,
+                        modelMatrix: Cesium.Transforms.headingPitchRollToFixedFrame(
+                            position,
+                            hpr
+                        ),
+                        scale: 1.0,
+                    });
+                    this.viewer.scene.primitives.add(model);
+                }
+            } catch (error) {
+                console.error("Failed to load models:", error);
+            }
+    },
+
     }
 };
 </script>

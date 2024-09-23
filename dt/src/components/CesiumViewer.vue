@@ -8,6 +8,8 @@ export default {
     data() {
         return {
             viewer: null,
+            // tianhebuildingUrl: 'http://localhost:8080/tianhe_building_model/tileset.json',
+            tianhebuildingUrl: 'http://localhost:8080/3dtiles_output/tileset.json',
             hkustBuildingUrl: 'http://localhost:8080/HKUSTData/tileset.json',
             taiyuanModelUrl: 'http://localhost:8080/taiyuan_gltf/modelinfo.json',
         };
@@ -30,8 +32,8 @@ export default {
         //隐藏cesium的logo
         this.viewer._cesiumWidget._creditContainer.style.display = "none";
 
-        this.loadHKUSTBuilding();
-        this.loadModel();
+        this.load3dtiles();
+        // this.loadModel();
     },
     methods: {
         /**
@@ -39,24 +41,35 @@ export default {
          * @returns {Promise<void>}
          * @description 从URL加载3D瓦片集
          */
-        async loadHKUSTBuilding(){
+        async load3dtiles(){
             try {
                 const tileset = await Cesium.Cesium3DTileset.fromUrl(
-                    this.hkustBuildingUrl
+                    this.tianhebuildingUrl
                 );
                 this.viewer.scene.primitives.add(tileset);
                 this.viewer.zoomTo(tileset);
             } catch (error) {
                 console.error(`Error creating tileset: ${error}`);
-            }
-
-            // 监听点击事件
+            }    // 监听点击事件
             this.viewer.screenSpaceEventHandler.setInputAction((movement) => {
                 const pickedFeature = this.viewer.scene.pick(movement.position);
                 if (Cesium.defined(pickedFeature)) {
                     // 清除之前选择的实体
                     this.viewer.selectedEntity = null;
-                    console.log(pickedFeature);
+
+                    // // 获取属性
+                    // const properties = pickedFeature.getPropertyNames().map(name => {
+                    //     return `${name}: ${pickedFeature.getProperty(name)}`;
+                    // }).join('\n');
+                    // console.log('属性信息:', properties);
+
+                    // 弹出属性框
+                    this.viewer.selectedEntity = new Cesium.Entity({
+                        description: "its a building",
+                    });
+
+                    // 改变颜色为红色
+                    pickedFeature.color = Cesium.Color.RED.withAlpha(0.8);
                 }
             }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
         },

@@ -9,7 +9,7 @@ export default {
         return {
             viewer: null,
             // tianhebuildingUrl: 'http://localhost:8080/tianhe_building_model/tileset.json',
-            tianhebuildingUrl: 'http://localhost:8080/3dtiles_output/tileset.json',
+            tianhebuildingUrl: 'http://localhost:8080/3dtiles_output/tileset.json', //换成你自己tomcat的地址
             hkustBuildingUrl: 'http://localhost:8080/HKUSTData/tileset.json',
             taiyuanModelUrl: 'http://localhost:8080/taiyuan_gltf/modelinfo.json',
         };

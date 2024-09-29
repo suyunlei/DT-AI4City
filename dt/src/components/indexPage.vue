@@ -3,25 +3,30 @@
     <!-- CesiumViewer 组件 -->
     <CesiumViewer />
 
-    <!-- 悬浮视频框 -->
+    <!-- 左上角的 ControlBar 悬浮框 -->
+    <ControlBar />
+
+    <!-- 右下角的 VideoBar 悬浮框 -->
     <div class="video-bar" v-if="isVideoBarVisible">
       <VideoBar />
-      <button class="close-btn" @click="toggleVideoBar">Close</button>
+      <button class="close-btn" @click="toggleVideoBar">关闭</button>
     </div>
 
     <!-- 控制视频框显示的按钮 -->
-    <button class="open-btn" v-if="!isVideoBarVisible" @click="toggleVideoBar">Open Video</button>
+    <button class="open-btn" v-if="!isVideoBarVisible" @click="toggleVideoBar">打开视频</button>
   </div>
 </template>
 
 <script>
 import CesiumViewer from './CesiumViewer.vue';
 import VideoBar from './VideoBar.vue';
+import ControlBar from './ControlBar.vue'; // 引入ControlBar组件
 
 export default {
   components: {
     CesiumViewer,
     VideoBar,
+    ControlBar, // 注册ControlBar组件
   },
   data() {
     return {
@@ -43,6 +48,7 @@ export default {
   width: 100vw;
 }
 
+/* VideoBar 和 Open/Close 按钮的样式保持不变 */
 .video-bar {
   position: absolute;
   bottom: 20px;

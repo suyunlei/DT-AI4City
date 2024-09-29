@@ -34,10 +34,6 @@ export default {
 
         this.load3dtiles();
         // this.loadDigitalMan();
-
-        // setInterval(()=>{
-        //     this.lockOrientation();
-        // },3000)
     },
     methods: {
         /**
@@ -124,7 +120,7 @@ export default {
 
             // 轨迹时间段
             const startTime = Cesium.JulianDate.now();
-            const totalTimeInSeconds = positions.length * 20;  // 根据每个点20秒的时间间隔动态计算总时间
+            const totalTimeInSeconds = 60;
             const stopTime = Cesium.JulianDate.addSeconds(startTime, totalTimeInSeconds, new Cesium.JulianDate());
 
             // 设置Cesium动画的时间范围
@@ -140,9 +136,12 @@ export default {
             // 创建 SampledPositionProperty 来储存平滑轨迹
             const positionProperty = new Cesium.SampledPositionProperty();
 
+            // 根据轨迹点的数量计算每个点的时间间隔
+            const timeInterval = totalTimeInSeconds / (positions.length - 1);
+
             // 遍历已知轨迹，设置每个位置的时间和坐标
             positions.forEach((pos, index) => {
-                const time = Cesium.JulianDate.addSeconds(startTime, index * 20, new Cesium.JulianDate()); // 每个点20秒
+                const time = Cesium.JulianDate.addSeconds(startTime, index * timeInterval, new Cesium.JulianDate()); // 根据新时间间隔设置时间
                 const position = Cesium.Cartesian3.fromDegrees(pos.longitude, pos.latitude, pos.height);
                 positionProperty.addSample(time, position);
             });
@@ -159,39 +158,6 @@ export default {
 
             // 让摄像头跟随模型
             this.viewer.trackedEntity = entity;
-
-            // 检查实体和位置属性是否添加正确
-            console.log(entity);
-            // 获取模型当前的位置
-            const modelPosition = entity.position.getValue(Cesium.JulianDate.now());
-            // 设定相机偏移量
-            const offset = new Cesium.HeadingPitchRange(
-                Cesium.Math.toRadians(77.25174418003685), 
-                Cesium.Math.toRadians(-17.14815670738321),
-                50
-            ); // 50表示距离模型的距离（以米为单位）
-            // 设置相机相对模型的位置和视角
-            this.viewer.scene.camera.lookAt(modelPosition, offset);
-            // 在跟随过程中保持相对偏移
-            this.viewer.trackedEntityChanged.addEventListener(() => {
-                this.viewer.scene.camera.lookAt(modelPosition, offset);
-            });
-        },
-
-        lockOrientation(){
-            const camera = this.viewer.scene.camera;
-            const position = camera.positionCartographic; // 获取当前相机的地理坐标（经纬度和高度）
-            const heading = camera.heading; // 获取航向角
-            const pitch = camera.pitch; // 获取俯仰角
-            const roll = camera.roll; // 获取滚转角
-            //获取缩放比例
-            const scale = camera.frustum.fov / 45;
-
-            console.log("Position:", position);
-            console.log("Heading:", Cesium.Math.toDegrees(heading)); // 转换为角度
-            console.log("Pitch:", Cesium.Math.toDegrees(pitch)); // 转换为角度
-            console.log("Roll:", Cesium.Math.toDegrees(roll)); // 转换为角度
-            console.log("Scale:", scale);
         },
     }
 }

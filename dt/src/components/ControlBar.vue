@@ -25,12 +25,12 @@ export default {
         {
           name: "石牌村",
           expanded: false,
-          paths: ["path5", "path1"],
+          paths: ["path4", "path2"],
         },
         {
           name: "侨源阁",
           expanded: false,
-          paths: ["Path1", "Path2"],
+          paths: ["path5", "Path2"],
         },
       ],
     };

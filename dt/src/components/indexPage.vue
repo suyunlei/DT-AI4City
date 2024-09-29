@@ -1,14 +1,14 @@
 <template>
   <div class="container">
     <!-- CesiumViewer 组件 -->
-    <CesiumViewer />
+    <CesiumViewer :currentPath="currentPath"/>
 
     <!-- 左上角的 ControlBar 悬浮框 -->
-    <ControlBar />
+    <ControlBar @path-clicked="handlePathClick"/>
 
     <!-- 右下角的 VideoBar 悬浮框 -->
     <div class="video-bar" v-if="isVideoBarVisible">
-      <VideoBar />
+      <VideoBar ref="videoBar"/>
       <button class="close-btn" @click="toggleVideoBar">关闭</button>
     </div>
 
@@ -31,11 +31,19 @@ export default {
   data() {
     return {
       isVideoBarVisible: true, // 控制视频框是否显示
+      currentPath: '', // 当前路径名
     };
   },
   methods: {
     toggleVideoBar() {
       this.isVideoBarVisible = !this.isVideoBarVisible;
+    },
+    handlePathClick(pathName) {
+      this.currentPath = pathName;
+      // 传递路径名给 CesiumViewer 组件 触发某个方法
+      // this.$refs.cesiumViewer.setCurrentPath(pathName);
+      // 传递路径名给 VideoBar 组件 修改VideoBar中的videoUrl
+      this.$refs.videoBar.setVideoUrl(pathName);
     },
   },
 };

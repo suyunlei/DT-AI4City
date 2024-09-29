@@ -8,24 +8,23 @@ export default {
     data() {
         return {
             viewer: null,
-            // tianhebuildingUrl: 'http://localhost:8080/tianhe_building_model/tileset.json',
             tianhebuildingUrl: 'http://localhost:8080/ai4city/3dtiles_output/tileset.json', //换成你自己tomcat的地址
-            hkustBuildingUrl: 'http://localhost:8080/ai4city/HKUSTData/tileset.json',
-            taiyuanModelUrl: 'http://localhost:8080/ai4city/taiyuan_gltf/modelinfo.json',
-            digitalManUrl: 'http://localhost:8080/ai4city/Cesium_Man.glb'
+            digitalManUrl: 'http://localhost:8080/ai4city/Cesium_Man.glb',
+            // hkustBuildingUrl: 'http://localhost:8080/ai4city/HKUSTData/tileset.json',
+            // taiyuanModelUrl: 'http://localhost:8080/ai4city/taiyuan_gltf/modelinfo.json',
         };
     },
     mounted() {
         Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1MGNiNDIzYy1hYzNjLTRmYzItOTk4ZS0wZjJjYzhjMDAwMTAiLCJpZCI6NzE0ODYsImlhdCI6MTYzNTIzNzg3Mn0.i0iTqEVPssK9EGZWU5_wdYSN_1ZObmwsu00Y29b6N0A';
         this.viewer = new Cesium.Viewer('cesiumContainer',{
             animation:false,       //是否显示动画控件
-            homeButton:true,       //是否显示home键
-            geocoder:true,         //是否显示地名查找控件，如果设置为true，则无法查询
-            baseLayerPicker:true, //是否显示图层选择控件
+            homeButton:false,       //是否显示home键
+            geocoder:false,         //是否显示地名查找控件，如果设置为true，则无法查询
+            baseLayerPicker:false, //是否显示图层选择控件
             timeline:false,        //是否显示时间线控件
             fullscreenButton:true, //是否全屏显示
             infoBox:true,         //是否显示点击要素之后显示的信息
-            sceneModePicker:true,  //是否显示投影方式控件  三维/二维
+            sceneModePicker:false,  //是否显示投影方式控件  三维/二维
             navigationInstructionsInitiallyVisible:false, //导航指令
             navigationHelpButton:false,     //是否显示帮助信息控件
             selectionIndicator:false, //是否显示指示器组件
@@ -34,7 +33,7 @@ export default {
         this.viewer._cesiumWidget._creditContainer.style.display = "none";
 
         this.load3dtiles();
-        this.loadDigitalMan();
+        // this.loadDigitalMan();
 
         // setInterval(()=>{
         //     this.lockOrientation();

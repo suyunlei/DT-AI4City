@@ -7,7 +7,7 @@
           {{ community.name }}
         </div>
         <ul v-if="community.expanded">
-          <li v-for="(path, pathIndex) in community.paths" :key="pathIndex">
+          <li v-for="(path, pathIndex) in community.paths" :key="pathIndex" @click="clickPath(index, pathIndex)">
             {{ path }}
           </li>
         </ul>
@@ -25,7 +25,7 @@ export default {
         {
           name: "石牌村",
           expanded: false,
-          paths: ["Path1", "Path2"],
+          paths: ["path5", "path1"],
         },
         {
           name: "侨源阁",
@@ -38,6 +38,12 @@ export default {
   methods: {
     toggleCommunity(index) {
       this.communities[index].expanded = !this.communities[index].expanded;
+    },
+    clickPath(communityIndex, pathIndex) {
+        // 获取当前社区的路径名
+        const pathName = this.communities[communityIndex].paths[pathIndex];
+        // 触发自定义事件，传递路径名给父组件
+        this.$emit('path-clicked', pathName);
     },
   },
 };

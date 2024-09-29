@@ -9,9 +9,10 @@ export default {
         return {
             viewer: null,
             // tianhebuildingUrl: 'http://localhost:8080/tianhe_building_model/tileset.json',
-            tianhebuildingUrl: 'http://localhost:8080/3dtiles_output/tileset.json', //换成你自己tomcat的地址
-            hkustBuildingUrl: 'http://localhost:8080/HKUSTData/tileset.json',
-            taiyuanModelUrl: 'http://localhost:8080/taiyuan_gltf/modelinfo.json',
+            tianhebuildingUrl: 'http://localhost:8080/ai4city/3dtiles_output/tileset.json', //换成你自己tomcat的地址
+            hkustBuildingUrl: 'http://localhost:8080/ai4city/HKUSTData/tileset.json',
+            taiyuanModelUrl: 'http://localhost:8080/ai4city/taiyuan_gltf/modelinfo.json',
+            digitalManUrl: 'http://localhost:8080/ai4city/Cesium_Man.glb'
         };
     },
     mounted() {
@@ -33,7 +34,11 @@ export default {
         this.viewer._cesiumWidget._creditContainer.style.display = "none";
 
         this.load3dtiles();
-        // this.loadModel();
+        this.loadDigitalMan();
+
+        // setInterval(()=>{
+        //     this.lockOrientation();
+        // },3000)
     },
     methods: {
         /**
@@ -103,10 +108,95 @@ export default {
             } catch (error) {
                 console.error("Failed to load models:", error);
             }
-    },
+        },
 
+        /**
+         * 加载数字人
+         * @returns {Promise<void>}
+         * @description 从URL加载模型
+         */
+        loadDigitalMan() {
+            // 已知的经纬度轨迹
+            const positions = [
+                { longitude: 113.3335155, latitude: 23.13276097, height: 0 },
+                { longitude: 113.3344576, latitude: 23.1329691, height: 0 },
+                // 可以继续添加更多的轨迹点
+            ];
+
+            // 轨迹时间段
+            const startTime = Cesium.JulianDate.now();
+            const totalTimeInSeconds = positions.length * 20;  // 根据每个点20秒的时间间隔动态计算总时间
+            const stopTime = Cesium.JulianDate.addSeconds(startTime, totalTimeInSeconds, new Cesium.JulianDate());
+
+            // 设置Cesium动画的时间范围
+            this.viewer.clock.startTime = startTime.clone();
+            this.viewer.clock.stopTime = stopTime.clone();
+            this.viewer.clock.currentTime = startTime.clone();
+            this.viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP; // 循环播放
+            this.viewer.clock.multiplier = 1; // 时间加速倍数，设为1确保按真实时间播放
+
+            // 启动时钟的动画
+            this.viewer.clock.shouldAnimate = true;
+
+            // 创建 SampledPositionProperty 来储存平滑轨迹
+            const positionProperty = new Cesium.SampledPositionProperty();
+
+            // 遍历已知轨迹，设置每个位置的时间和坐标
+            positions.forEach((pos, index) => {
+                const time = Cesium.JulianDate.addSeconds(startTime, index * 20, new Cesium.JulianDate()); // 每个点20秒
+                const position = Cesium.Cartesian3.fromDegrees(pos.longitude, pos.latitude, pos.height);
+                positionProperty.addSample(time, position);
+            });
+
+            // 加载GLB模型
+            const entity = this.viewer.entities.add({
+                position: positionProperty,
+                orientation: new Cesium.VelocityOrientationProperty(positionProperty),
+                model: {
+                    uri: this.digitalManUrl, // 替换为你的GLB文件路径
+                    scale: 1.0,
+                },
+            });
+
+            // 让摄像头跟随模型
+            this.viewer.trackedEntity = entity;
+
+            // 检查实体和位置属性是否添加正确
+            console.log(entity);
+            // 获取模型当前的位置
+            const modelPosition = entity.position.getValue(Cesium.JulianDate.now());
+            // 设定相机偏移量
+            const offset = new Cesium.HeadingPitchRange(
+                Cesium.Math.toRadians(77.25174418003685), 
+                Cesium.Math.toRadians(-17.14815670738321),
+                50
+            ); // 50表示距离模型的距离（以米为单位）
+            // 设置相机相对模型的位置和视角
+            this.viewer.scene.camera.lookAt(modelPosition, offset);
+            // 在跟随过程中保持相对偏移
+            this.viewer.trackedEntityChanged.addEventListener(() => {
+                this.viewer.scene.camera.lookAt(modelPosition, offset);
+            });
+        },
+
+        lockOrientation(){
+            const camera = this.viewer.scene.camera;
+            const position = camera.positionCartographic; // 获取当前相机的地理坐标（经纬度和高度）
+            const heading = camera.heading; // 获取航向角
+            const pitch = camera.pitch; // 获取俯仰角
+            const roll = camera.roll; // 获取滚转角
+            //获取缩放比例
+            const scale = camera.frustum.fov / 45;
+
+            console.log("Position:", position);
+            console.log("Heading:", Cesium.Math.toDegrees(heading)); // 转换为角度
+            console.log("Pitch:", Cesium.Math.toDegrees(pitch)); // 转换为角度
+            console.log("Roll:", Cesium.Math.toDegrees(roll)); // 转换为角度
+            console.log("Scale:", scale);
+        }
     }
-};
+}
+
 </script>
 
 <style>

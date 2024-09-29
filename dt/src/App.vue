@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <CesiumViewer />
+    <indexPage />
   </div>
 </template>
 
 <script>
-import CesiumViewer from './components/CesiumViewer.vue';
+import indexPage from './components/indexPage.vue';
 
 export default {
   name: 'App',
   components: {
-    CesiumViewer
+    indexPage
   }
 }
 </script>

@@ -193,7 +193,7 @@ export default {
             console.log("Pitch:", Cesium.Math.toDegrees(pitch)); // 转换为角度
             console.log("Roll:", Cesium.Math.toDegrees(roll)); // 转换为角度
             console.log("Scale:", scale);
-        }
+        },
     }
 }
 

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <!-- CesiumViewer 组件 -->
-    <CesiumViewer :currentPath="currentPath"/>
+    <CesiumViewer ref="cesiumViewer"/>
 
     <!-- 左上角的 ControlBar 悬浮框 -->
     <ControlBar @path-clicked="handlePathClick"/>
@@ -31,7 +31,6 @@ export default {
   data() {
     return {
       isVideoBarVisible: true, // 控制视频框是否显示
-      currentPath: '', // 当前路径名
     };
   },
   methods: {
@@ -39,11 +38,10 @@ export default {
       this.isVideoBarVisible = !this.isVideoBarVisible;
     },
     handlePathClick(pathName) {
-      this.currentPath = pathName;
-      // 传递路径名给 CesiumViewer 组件 触发某个方法
-      // this.$refs.cesiumViewer.setCurrentPath(pathName);
       // 传递路径名给 VideoBar 组件 修改VideoBar中的videoUrl
       this.$refs.videoBar.setVideoUrl(pathName);
+      // 传递路径名给 CesiumViewer 组件 触发某个方法
+      this.$refs.cesiumViewer.loadDigitalMan(pathName);
     },
   },
 };

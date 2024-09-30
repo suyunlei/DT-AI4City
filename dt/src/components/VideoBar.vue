@@ -17,8 +17,14 @@ export default {
   },
   methods: {
     setVideoUrl(pathName) {
+      let pathUrl = '';
+      if(pathName === '石牌村实验区路线'){
+        pathUrl = 'path3';
+      } else if(pathName === '侨源阁实验区路线'){
+        pathUrl = 'path4';
+      }
       // 根据路径名设置视频地址
-      this.localVideoUrl = `http://localhost:8080/ai4city/${pathName}.mp4`;
+      this.localVideoUrl = `http://localhost:8080/ai4city/${pathUrl}.mp4`;
       this.loadAndPlayVideo();
     },
     loadAndPlayVideo() {

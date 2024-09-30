@@ -49,6 +49,8 @@ export default {
         //隐藏cesium的logo
         this.viewer._cesiumWidget._creditContainer.style.display = "none";
 
+        this.viewer.clock.currentTime = Cesium.JulianDate.fromIso8601('2024-09-30T10:00:00Z');
+
         this.load3dtiles();
         this.addPoints();
         // this.loadDigitalMan();
@@ -134,11 +136,9 @@ export default {
             }
 
             let positions = undefined;
-            if(path_name == 'path5'){
-                positions = this.position_array[0];
-            } else if(path_name == 'path4'){
+            if(path_name == '侨源阁实验区路线'){
                 positions = this.position_array[1];
-            } else if(path_name == 'path3'){
+            } else if(path_name == '石牌村实验区路线'){
                 positions = this.position_array[2];
             } else {
                 console.error('路径名错误');

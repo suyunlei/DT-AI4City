@@ -25,12 +25,12 @@ export default {
         {
           name: "石牌村",
           expanded: false,
-          paths: ["path3"],
+          paths: ["石牌村实验区路线"],
         },
         {
           name: "侨源阁",
           expanded: false,
-          paths: ["path4","path5"],
+          paths: ["侨源阁实验区路线"],
         },
       ],
     };
@@ -74,10 +74,14 @@ export default {
 
 .control-bar ul li {
   cursor: pointer;
-  margin: 5px 0;
+  margin: auto;
+  border: #ccc solid 1px;
 }
 
 .control-bar ul li ul {
-  margin-left: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin: auto;
+  width: 80%;
 }
 </style>

@@ -25,7 +25,7 @@
       initMap() {
         // 创建两个GeoJSON源
         const geojsonSource1 = new VectorSource({
-          url: 'http://localhost:8080/ai4city/ai4city/qiaoyuange.geojson', // 替换为第一个行政边界的GeoJSON路径
+          url: 'http://localhost:8080/ai4city/qiaoyuange.geojson', // 替换为第一个行政边界的GeoJSON路径
           format: new GeoJSON(),
         });
   
@@ -45,6 +45,18 @@
             fill: new Fill({
               color: 'rgba(255, 0, 0, 0.1)', // 红色填充，透明度0.1
             }),
+            label: new Text({
+                text: '石牌桥社区', // 在这里定义标签文本
+                font: '12px Calibri,sans-serif',
+                fill: new Fill({
+                    color: '#000', // 标签颜色
+                }),
+                stroke: new Stroke({
+                    color: '#fff', // 标签描边
+                    width: 2,
+                }),
+                offsetY: -12, // 标签偏移，使其不压在线上
+            }),
           }),
         });
   
@@ -56,7 +68,19 @@
               width: 2,
             }),
             fill: new Fill({
-              color: 'rgba(0, 0, 255, 0.1)', // 蓝色填充，透明度0.1
+                color: 'rgba(0, 0, 255, 0.1)', // 蓝色填充，透明度0.1
+            }),
+            label: new Text({
+                text: '侨源阁社区', // 在这里定义标签文本
+                font: '12px Calibri,sans-serif',
+                fill: new Fill({
+                    color: '#000', // 标签颜色
+                }),
+                stroke: new Stroke({
+                    color: '#fff', // 标签描边
+                    width: 2,
+                }),
+                offsetY: -12, // 标签偏移，使其不压在线上
             }),
           }),
         });
@@ -89,9 +113,9 @@
       changeViewTo(pathName) {
         let layerIndex = 1;
         if(pathName === '石牌村实验区路线') {
-          layerIndex = 1;
-        } else if(pathName === '侨源阁实验区路线') {
           layerIndex = 2;
+        } else if(pathName === '侨源阁实验区路线') {
+          layerIndex = 1;
         }
         const layers = this.map.getLayers().getArray();
         const layer = layers[layerIndex];

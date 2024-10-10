@@ -39,7 +39,7 @@ export default {
             geocoder:false,         //是否显示地名查找控件，如果设置为true，则无法查询
             baseLayerPicker:false, //是否显示图层选择控件
             timeline:false,        //是否显示时间线控件
-            fullscreenButton:true, //是否全屏显示
+            fullscreenButton:false, //是否全屏显示
             infoBox:true,         //是否显示点击要素之后显示的信息
             sceneModePicker:false,  //是否显示投影方式控件  三维/二维
             navigationInstructionsInitiallyVisible:false, //导航指令
@@ -137,7 +137,7 @@ export default {
 
             let positions = undefined;
             if(path_name == '侨源阁实验区路线'){
-                positions = this.position_array[1];
+                positions = this.position_array[0];
             } else if(path_name == '石牌村实验区路线'){
                 positions = this.position_array[2];
             } else {
@@ -210,8 +210,8 @@ export default {
                 name: '石牌村',
                 position: Cesium.Cartesian3.fromDegrees(113.337679, 23.13389766, 0),
                 point: {
-                    pixelSize: 50,
-                    color: Cesium.Color.RED,
+                    pixelSize: 20,
+                    color: Cesium.Color.BLUE,
                     outlineColor: Cesium.Color.WHITE,
                     outlineWidth: 2,
                 },
@@ -219,19 +219,19 @@ export default {
                     text: '石牌村',
                     font: '24px sans-serif',
                     style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                    fillColor: Cesium.Color.RED,
+                    fillColor: Cesium.Color.BLUE,
                     outlineColor: Cesium.Color.WHITE,
                     outlineWidth: 2,
                     verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                    pixelOffset: new Cesium.Cartesian2(0, -50),
+                    pixelOffset: new Cesium.Cartesian2(0, -20),
                 },
             });
             const point2 = this.viewer.entities.add({
                 name: '侨源阁',
                 position: Cesium.Cartesian3.fromDegrees(113.3268036, 23.15720613, 0),
                 point: {
-                    pixelSize: 50,
-                    color: Cesium.Color.BLUE,
+                    pixelSize: 20,
+                    color: Cesium.Color.RED,
                     outlineColor: Cesium.Color.WHITE,
                     outlineWidth: 2,
                 },
@@ -239,11 +239,11 @@ export default {
                     text: '侨源阁',
                     font: '24px sans-serif',
                     style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                    fillColor: Cesium.Color.BLUE,
+                    fillColor: Cesium.Color.RED,
                     outlineColor: Cesium.Color.WHITE,
                     outlineWidth: 2,
                     verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                    pixelOffset: new Cesium.Cartesian2(0, -50),
+                    pixelOffset: new Cesium.Cartesian2(0, -20),
                 },
             });
             console.log('点加载完成',point1,point2);
@@ -260,7 +260,6 @@ export default {
             //     },
             //     duration: 3,
             // });
-            // 我有camera.position, camera.direction, camera.up的具体数值以后 设置场景相机为当前参数
             this.viewer.camera.position = new Cesium.Cartesian3(-2325406.1209549042, 5390488.236070972, 2489910.381484629);
             this.viewer.camera.direction = new Cesium.Cartesian3(0.3262126487280823, -0.8362938915421779, 0.4406788340492982);
             this.viewer.camera.up = new Cesium.Cartesian3(-0.19988969391568479, 0.39461307974219284, 0.8968414729274488);

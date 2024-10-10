@@ -49,10 +49,11 @@ export default {
         //隐藏cesium的logo
         this.viewer._cesiumWidget._creditContainer.style.display = "none";
 
-        this.viewer.clock.currentTime = Cesium.JulianDate.fromIso8601('2024-09-30T10:00:00Z');
-
         this.load3dtiles();
         this.addPoints();
+        this.viewer.scene.light = new Cesium.DirectionalLight({ 
+            direction: new Cesium.Cartesian3(0.354925, -0.890918, -0.283358)
+        })
         // this.loadDigitalMan();
     },
     methods: {
@@ -130,15 +131,18 @@ export default {
          * @description 从URL加载模型
          */
         loadDigitalMan(path_name) {
+            this.viewer.scene.light = new Cesium.DirectionalLight({ 
+                direction: new Cesium.Cartesian3(0.354925, -0.890918, -0.283358)
+            })
             // 移除之前的小人
             if(this.running_man){
                 this.viewer.entities.remove(this.running_man);
             }
 
             let positions = undefined;
-            if(path_name == '侨源阁实验区路线'){
-                positions = this.position_array[0];
-            } else if(path_name == '石牌村实验区路线'){
+            if(path_name == '侨源阁社区路径'){
+                positions = this.position_array[1];
+            } else if(path_name == '朝阳社区路径'){
                 positions = this.position_array[2];
             } else {
                 console.error('路径名错误');
@@ -179,7 +183,7 @@ export default {
                 orientation: new Cesium.VelocityOrientationProperty(positionProperty),
                 model: {
                     uri: this.digitalManUrl, // 替换为你的GLB文件路径
-                    scale: 3.0,
+                    scale: 2.0,
                 },
             });
             console.log('小人加载完成',entity);

@@ -23,14 +23,14 @@ export default {
     return {
       communities: [
         {
-          name: "石牌村",
+          name: "朝阳社区",
           expanded: false,
-          paths: ["石牌村实验区路线"],
+          paths: ["朝阳社区路径"],
         },
         {
-          name: "侨源阁",
+          name: "侨源阁社区",
           expanded: false,
-          paths: ["侨源阁实验区路线"],
+          paths: ["侨源阁社区路径"],
         },
       ],
     };
@@ -54,7 +54,8 @@ export default {
   position: absolute;
   top: 20px;
   left: 20px;
-  width: 200px;
+  width: 150px;
+  font-size: x-small;
   background-color: #fff;
   border: 1px solid #ccc;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);

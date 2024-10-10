@@ -112,9 +112,9 @@
       // 切换视图到指定的图层
       changeViewTo(pathName) {
         let layerIndex = 1;
-        if(pathName === '石牌村实验区路线') {
+        if(pathName === '朝阳社区路径') {
           layerIndex = 2;
-        } else if(pathName === '侨源阁实验区路线') {
+        } else if(pathName === '侨源阁社区路径') {
           layerIndex = 1;
         }
         const layers = this.map.getLayers().getArray();

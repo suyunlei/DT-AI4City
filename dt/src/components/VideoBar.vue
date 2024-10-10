@@ -18,10 +18,10 @@ export default {
   methods: {
     setVideoUrl(pathName) {
       let pathUrl = '';
-      if(pathName === '石牌村实验区路线'){
+      if(pathName === '朝阳社区路径'){
         pathUrl = 'path3';
-      } else if(pathName === '侨源阁实验区路线'){
-        pathUrl = 'path4';
+      } else if(pathName === '侨源阁社区路径'){
+        pathUrl = 'path5';
       }
       // 根据路径名设置视频地址
       this.localVideoUrl = `http://localhost:8080/ai4city/${pathUrl}.mp4`;

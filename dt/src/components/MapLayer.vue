@@ -77,13 +77,26 @@
           }),
         });
   
-        // 当GeoJSON源加载完成后，将视角聚焦在vectorLayer1上
-        geojsonSource1.once('change', () => {
-          if (geojsonSource1.getState() === 'ready') {
-            const extent = geojsonSource1.getExtent(); // 获取vectorLayer1的边界范围
-            this.map.getView().fit(extent, { duration: 1000, padding: [20, 20, 20, 20] }); // 动画平移视图并聚焦到图层
-          }
-        });
+        // // 当GeoJSON源加载完成后，将视角聚焦在vectorLayer1上
+        // geojsonSource1.once('change', () => {
+        //   if (geojsonSource1.getState() === 'ready') {
+        //     const extent = geojsonSource1.getExtent(); // 获取vectorLayer1的边界范围
+        //     this.map.getView().fit(extent, { duration: 1000, padding: [20, 20, 20, 20] }); // 动画平移视图并聚焦到图层
+        //   }
+        // });
+      },
+      // 切换视图到指定的图层
+      changeViewTo(pathName) {
+        let layerIndex = 1;
+        if(pathName === '石牌村实验区路线') {
+          layerIndex = 1;
+        } else if(pathName === '侨源阁实验区路线') {
+          layerIndex = 2;
+        }
+        const layers = this.map.getLayers().getArray();
+        const layer = layers[layerIndex];
+        const extent = layer.getSource().getExtent();
+        this.map.getView().fit(extent, { duration: 1000, padding: [20, 20, 20, 20] });
       },
     },
   };

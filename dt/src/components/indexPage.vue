@@ -12,7 +12,7 @@
 
     <!-- 右上角的 MapLayer 悬浮框 -->
     <div class="map-layer-window">
-      <MapLayer />
+      <MapLayer ref="openLayers"/>
     </div>
   </div>
 </template>
@@ -21,14 +21,14 @@
 import CesiumViewer from './CesiumViewer.vue';
 import VideoBar from './VideoBar.vue';
 import ControlBar from './ControlBar.vue';
-import MapLayer from './MapLayer.vue'; // 引入 MapLayer 组件
+import MapLayer from './MapLayer.vue';
 
 export default {
   components: {
     CesiumViewer,
     VideoBar,
     ControlBar,
-    MapLayer, // 注册 MapLayer 组件
+    MapLayer,
   },
   data() {
     return {
@@ -40,6 +40,8 @@ export default {
       this.$refs.videoBar.setVideoUrl(pathName);
       // 传递路径名给 CesiumViewer 组件 触发某个方法
       this.$refs.cesiumViewer.loadDigitalMan(pathName);
+      // 传递路径名给 OpenLayers 组件 触发某个方法
+      this.$refs.openLayers.changeViewTo(pathName);
     },
   },
 };

@@ -9,7 +9,11 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
-    "vue": "^3.2.13"
+    "ol": "^10.2.1",
+    "ol-contextmenu": "^5.5.0",
+    "ol-ext": "^4.0.23",
+    "vue": "^3.2.13",
+    "vue3-openlayers": "^11.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -36,7 +40,7 @@
       "no-debugger": "off"
     },
     "globals": {
-      "Cesium":true
+      "Cesium": true
     }
   },
   "browserslist": [

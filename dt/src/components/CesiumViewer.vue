@@ -179,26 +179,27 @@ export default {
                 orientation: new Cesium.VelocityOrientationProperty(positionProperty),
                 model: {
                     uri: this.digitalManUrl, // 替换为你的GLB文件路径
-                    scale: 1.0,
+                    scale: 3.0,
                 },
             });
             console.log('小人加载完成',entity);
             this.running_man = entity; //存储当前小人
-            // 将视角flyto到小人位置
-            this.viewer.flyTo(entity, {
-                offset: new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(-40), 20),
-            });
-            // 监听鼠标点击事件
-            this.viewer.screenSpaceEventHandler.setInputAction((movement) => {
-                const pickedFeature = this.viewer.scene.pick(movement.position);
-                if (Cesium.defined(pickedFeature)) {
-                    console.log('pickedFeature:', pickedFeature);
-                    // 清除之前选择的实体
-                    this.viewer.selectedEntity = null;
-                    // 视角跟随
-                    this.viewer.trackedEntity = this.running_man;
-                }
-            }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
+            this.viewer.trackedEntity = entity; //跟踪小人
+            // // 将视角flyto到小人位置
+            // this.viewer.flyTo(entity, {
+            //     offset: new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(-40), 20),
+            // });
+            // // 监听鼠标点击事件
+            // this.viewer.screenSpaceEventHandler.setInputAction((movement) => {
+            //     const pickedFeature = this.viewer.scene.pick(movement.position);
+            //     if (Cesium.defined(pickedFeature)) {
+            //         console.log('pickedFeature:', pickedFeature);
+            //         // 清除之前选择的实体
+            //         this.viewer.selectedEntity = null;
+            //         // 视角跟随
+            //         this.viewer.trackedEntity = this.running_man;
+            //     }
+            // }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
         },
 
         /**
@@ -271,8 +272,8 @@ export default {
 
 <style>
 .cesium-container {
-  width: 100%;
-  height: 100vh;
+  width: 600px;
+  height: 300px;
   margin: 0;
   padding: 0;
   overflow: hidden;
